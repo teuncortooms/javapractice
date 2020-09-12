@@ -11,5 +11,4 @@ public class Main {
 //         * the range, that is the difference between the smallest and largest
         new Analyser().Run();
     }
-
 }
