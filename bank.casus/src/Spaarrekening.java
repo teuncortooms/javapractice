@@ -18,4 +18,10 @@ public class Spaarrekening extends Rekening {
         tegenrekening.afschrijven(bedrag);
         this.bijschrijven(bedrag);
     }
+
+    @Override
+    public String toString() {
+        return String.format("Spaarrekening met rekeningnummer %s heeft een saldo van %s euro.",
+                rekeningnummer.toString(), saldo.toString());
+    }
 }

@@ -1,29 +1,50 @@
+import Exceptions.RekeningNietGevondenException;
 import Exceptions.SaldoTeLaagException;
-import jdk.jshell.spi.ExecutionControl;
-
 import java.math.BigDecimal;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 public class Betaalrekening extends Rekening {
-    private Client eigenaar;
-    private List<Spaarrekening> spaarrekeningen;
+    private final List<Spaarrekening> spaarrekeningen = new LinkedList<>();
 
-    public Betaalrekening(Client eigenaar) {
-        this.eigenaar = eigenaar;
+    public Betaalrekening(BigDecimal bedrag) {
+        if (bedrag.compareTo(BigDecimal.ZERO) < 1) throw new IllegalArgumentException(
+                "Een betaalrekening kan alleen met een positief bedrag worden geopend.");
+        this.saldo = bedrag;
+        this.minimum = BigDecimal.valueOf(-500);
     }
 
-    public void overboeken(Betaalrekening tegenrekening, BigDecimal bedrag, AfBij afbij)
+    public List<Spaarrekening> getSpaarrekeningen(){
+        return this.spaarrekeningen;
+    }
+
+    @SuppressWarnings({"unused", "RedundantSuppression"})
+    public Spaarrekening getSpaarrekening(UUID spaarrekeningNummer) throws RekeningNietGevondenException {
+        return this.getSpaarrekeningen().stream()
+                .filter((s) -> s.getRekeningnummer() == spaarrekeningNummer)
+                .findFirst().orElseThrow(RekeningNietGevondenException::new);
+    }
+
+    public void overboeken(BigDecimal bedrag, Betaalrekening tegenrekening)
             throws SaldoTeLaagException, IllegalArgumentException {
-        switch (afbij) {
-            case BIJ -> overboekenVanTegenrekeningNaarDeze(tegenrekening, bedrag);
-            case AF -> overboekenVanDezeNaarTegenrekening(tegenrekening, bedrag);
-            default -> throw new IllegalArgumentException(afbij + " is not a known option");
-        }
+        this.afschrijven(bedrag);
+        tegenrekening.bijschrijven(bedrag);
     }
 
     public Spaarrekening aanmakenSpaarrekening() {
-        Spaarrekening spaarrekening =new Spaarrekening(this);
+        Spaarrekening spaarrekening = new Spaarrekening(this);
         this.spaarrekeningen.add(spaarrekening);
         return spaarrekening;
+    }
+
+    public void storten(BigDecimal bedrag) {
+        this.bijschrijven(bedrag);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Betaalrekening met rekeningnummer %s heeft een saldo van %s euro.",
+                rekeningnummer.toString(), saldo.toString());
     }
 }

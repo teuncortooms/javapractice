@@ -6,36 +6,36 @@ import java.util.UUID;
 public class Rekening {
     protected UUID rekeningnummer;
     protected BigDecimal saldo;
+    protected BigDecimal minimum;
 
     public UUID getRekeningnummer() {
-        return this.rekeningnummer
+        return this.rekeningnummer;
+    }
+    @SuppressWarnings({"unused", "RedundantSuppression"})
+    public BigDecimal getSaldo() {
+        return this.saldo;
     }
 
     public Rekening() {
         this.rekeningnummer = UUID.randomUUID();
         this.saldo = BigDecimal.ZERO;
+        this.minimum = BigDecimal.ZERO;
     }
 
-    protected void overboekenVanDezeNaarTegenrekening(Betaalrekening tegenrekening, BigDecimal bedrag)
-            throws SaldoTeLaagException {
-        this.afschrijven(bedrag);
-        tegenrekening.bijschrijven(bedrag);
-    }
-
-    protected void overboekenVanTegenrekeningNaarDeze(Betaalrekening tegenrekening, BigDecimal bedrag)
-            throws SaldoTeLaagException {
-        tegenrekening.afschrijven(bedrag);
-        this.bijschrijven(bedrag);
-    }
-
-    protected void afschrijven(BigDecimal amount) throws SaldoTeLaagException {
-        BigDecimal newSaldo = this.saldo.subtract(amount);
-        if (newSaldo.compareTo(BigDecimal.ZERO) == -1)
+    protected void afschrijven(BigDecimal bedrag) throws SaldoTeLaagException {
+        BigDecimal newSaldo = this.saldo.subtract(bedrag);
+        if (newSaldo.compareTo(this.minimum) < 0)
             throw new SaldoTeLaagException();
         this.saldo = newSaldo;
     }
 
-    protected void bijschrijven(BigDecimal amount) {
-        this.saldo = this.saldo.add(amount);
+    protected void bijschrijven(BigDecimal bedrag) {
+        this.saldo = this.saldo.add(bedrag);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Rekening met rekeningnummer %s heeft een saldo van %s euro.",
+        rekeningnummer.toString(), saldo.toString());
     }
 }

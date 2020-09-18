@@ -1,16 +1,17 @@
 import Exceptions.RekeningNietGevondenException;
-
-import javax.accessibility.AccessibleStreamable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
 public class Client {
-    private UUID clientNummer;
-    private String naam;
-    private LocalDate geboortedatum;
-    private List<Betaalrekening> betaalrekeningen;
+    @SuppressWarnings({"FieldCanBeLocal", "unused", "RedundantSuppression"})
+    private final String naam;
+    @SuppressWarnings({"FieldCanBeLocal", "unused", "RedundantSuppression"})
+    private final LocalDate geboortedatum;
+    private final UUID clientNummer;
+    private final List<Betaalrekening> betaalrekeningen;
 
     public UUID getClientNummer() {
         return this.clientNummer;
@@ -24,26 +25,19 @@ public class Client {
         this.clientNummer = UUID.randomUUID();
         this.naam = naam;
         this.geboortedatum = geboortedatum;
-        this.betaalrekeningen = new LinkedList<Betaalrekening>();
+        this.betaalrekeningen = new LinkedList<>();
     }
 
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public Betaalrekening getBetaalrekening(UUID betaalrekeningNummer) throws RekeningNietGevondenException {
-        Betaalrekening betaalrekening = this.getBetaalrekeningen().stream()
+        return this.getBetaalrekeningen().stream()
                 .filter((c) -> c.getRekeningnummer() == betaalrekeningNummer)
-                .findFirst().orElseThrow(() -> new RekeningNietGevondenException());
-        return betaalrekening;
+                .findFirst().orElseThrow(RekeningNietGevondenException::new);
     }
 
-    public Betaalrekening OpenBetaalrekening() {
-        Betaalrekening nieuweRekening = new Betaalrekening(this);
+    public Betaalrekening openBetaalrekening(BigDecimal bedrag) {
+        Betaalrekening nieuweRekening = new Betaalrekening(bedrag);
         this.betaalrekeningen.add(nieuweRekening);
         return nieuweRekening;
-    }
-
-    public void OpenSpaarrekening(Betaalrekening tegenrekening) {
-        if (!this.betaalrekeningen.contains(tegenrekening))
-            throw new IllegalArgumentException("Dat is geen valide tegenrekening.");
-
-        tegenrekening.aanmakenSpaarrekening();
     }
 }
