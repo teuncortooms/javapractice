@@ -21,7 +21,9 @@ public class Betaalrekening extends Rekening {
         }
     }
 
-    public void aanmakenSpaarrekening() {
-        this.spaarrekeningen.add(new Spaarrekening(this));
+    public Spaarrekening aanmakenSpaarrekening() {
+        Spaarrekening spaarrekening =new Spaarrekening(this);
+        this.spaarrekeningen.add(spaarrekening);
+        return spaarrekening;
     }
 }

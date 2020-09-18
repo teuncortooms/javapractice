@@ -1,3 +1,5 @@
+import Exceptions.RekeningNietGevondenException;
+
 import javax.accessibility.AccessibleStreamable;
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -10,6 +12,14 @@ public class Client {
     private LocalDate geboortedatum;
     private List<Betaalrekening> betaalrekeningen;
 
+    public UUID getClientNummer() {
+        return this.clientNummer;
+    }
+
+    public List<Betaalrekening> getBetaalrekeningen() {
+        return this.betaalrekeningen;
+    }
+
     public Client(String naam, LocalDate geboortedatum) {
         this.clientNummer = UUID.randomUUID();
         this.naam = naam;
@@ -17,8 +27,17 @@ public class Client {
         this.betaalrekeningen = new LinkedList<Betaalrekening>();
     }
 
-    public void OpenBetaalrekening() {
-        this.betaalrekeningen.add(new Betaalrekening(this));
+    public Betaalrekening getBetaalrekening(UUID betaalrekeningNummer) throws RekeningNietGevondenException {
+        Betaalrekening betaalrekening = this.getBetaalrekeningen().stream()
+                .filter((c) -> c.getRekeningnummer() == betaalrekeningNummer)
+                .findFirst().orElseThrow(() -> new RekeningNietGevondenException());
+        return betaalrekening;
+    }
+
+    public Betaalrekening OpenBetaalrekening() {
+        Betaalrekening nieuweRekening = new Betaalrekening(this);
+        this.betaalrekeningen.add(nieuweRekening);
+        return nieuweRekening;
     }
 
     public void OpenSpaarrekening(Betaalrekening tegenrekening) {

@@ -7,6 +7,10 @@ public class Rekening {
     protected UUID rekeningnummer;
     protected BigDecimal saldo;
 
+    public UUID getRekeningnummer() {
+        return this.rekeningnummer
+    }
+
     public Rekening() {
         this.rekeningnummer = UUID.randomUUID();
         this.saldo = BigDecimal.ZERO;
