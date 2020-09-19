@@ -1,11 +1,15 @@
 import Exceptions.SaldoTeLaagException;
-
+import Models.Bank;
+import Models.Betaalrekening;
+import Models.Client;
+import Models.Spaarrekening;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) {
         Bank bank = new Bank();
+
         // client 1
         Client client1 = bank.aanmeldenClient("Teun",
                 LocalDate.of(1985, 9, 6));

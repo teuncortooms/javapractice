@@ -1,5 +1,10 @@
+package Models;
+
 import Exceptions.RekeningNietGevondenException;
 import Exceptions.SaldoTeLaagException;
+import Factories.SpaarrekeningFactory;
+import Interfaces.ISpaarrekeningFactory;
+
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
@@ -7,12 +12,18 @@ import java.util.UUID;
 
 public class Betaalrekening extends Rekening {
     private final List<Spaarrekening> spaarrekeningen = new LinkedList<>();
+    private final ISpaarrekeningFactory spaarrekeningFactory;
 
     public Betaalrekening(BigDecimal bedrag) {
+        this(bedrag, new SpaarrekeningFactory());
+    }
+
+    public Betaalrekening(BigDecimal bedrag, ISpaarrekeningFactory spaarrekeningFactory) {
         if (bedrag.compareTo(BigDecimal.ZERO) < 1) throw new IllegalArgumentException(
                 "Een betaalrekening kan alleen met een positief bedrag worden geopend.");
         this.saldo = bedrag;
         this.minimum = BigDecimal.valueOf(-500);
+        this.spaarrekeningFactory = spaarrekeningFactory;
     }
 
     public List<Spaarrekening> getSpaarrekeningen(){
@@ -33,7 +44,7 @@ public class Betaalrekening extends Rekening {
     }
 
     public Spaarrekening aanmakenSpaarrekening() {
-        Spaarrekening spaarrekening = new Spaarrekening(this);
+        Spaarrekening spaarrekening = this.spaarrekeningFactory.create(this);
         this.spaarrekeningen.add(spaarrekening);
         return spaarrekening;
     }
