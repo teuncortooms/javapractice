@@ -7,13 +7,12 @@ import Interfaces.IClientFactory;
 import Interfaces.IClientRepository;
 import Mocks.EmptyClientRepository;
 import java.time.LocalDate;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
 public class Bank {
     private final IClientFactory clientFactory;
-    List<Client> clients = new LinkedList<>();
+    List<Client> clients;
 
     public Bank(){
         this(new EmptyClientRepository(), new ClientFactory());
@@ -37,6 +36,7 @@ public class Bank {
         return client;
     }
 
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public Client aanmeldenClient(String naam, LocalDate geboortedatum, IBetaalRekeningFactory betaalrekeningFactory) {
         Client client = this.clientFactory.create(naam, geboortedatum, betaalrekeningFactory);
         clients.add(client);

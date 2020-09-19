@@ -2,10 +2,8 @@ package Models;
 
 import Exceptions.RekeningNietGevondenException;
 import Factories.BetaalrekeningFactory;
-import Factories.ClientFactory;
 import Interfaces.IBetaalRekeningFactory;
 import Interfaces.ISpaarrekeningFactory;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -19,7 +17,7 @@ public class Client {
     private final LocalDate geboortedatum;
     private final UUID clientNummer;
     private final List<Betaalrekening> betaalrekeningen;
-    private IBetaalRekeningFactory betaalRekeningFactory;
+    private final IBetaalRekeningFactory betaalRekeningFactory;
 
     public UUID getClientNummer() {
         return this.clientNummer;
@@ -29,6 +27,7 @@ public class Client {
         return this.betaalrekeningen;
     }
 
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public Client(String naam, LocalDate geboortedatum) {
         this(naam, geboortedatum, new BetaalrekeningFactory());
     }
@@ -54,6 +53,7 @@ public class Client {
         return nieuweRekening;
     }
 
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public Betaalrekening openBetaalrekening(BigDecimal bedrag, ISpaarrekeningFactory spaarrekeningFactory) {
         Betaalrekening nieuweRekening = this.betaalRekeningFactory.create(bedrag, spaarrekeningFactory);
         this.betaalrekeningen.add(nieuweRekening);

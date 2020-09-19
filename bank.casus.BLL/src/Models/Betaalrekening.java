@@ -14,6 +14,7 @@ public class Betaalrekening extends Rekening {
     private final List<Spaarrekening> spaarrekeningen = new LinkedList<>();
     private final ISpaarrekeningFactory spaarrekeningFactory;
 
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public Betaalrekening(BigDecimal bedrag) {
         this(bedrag, new SpaarrekeningFactory());
     }

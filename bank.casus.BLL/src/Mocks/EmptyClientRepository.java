@@ -9,6 +9,6 @@ public class EmptyClientRepository implements IClientRepository {
 
     @Override
     public List<Client> getAll() {
-        return new LinkedList<Client>();
+        return new LinkedList<>();
     }
 }
