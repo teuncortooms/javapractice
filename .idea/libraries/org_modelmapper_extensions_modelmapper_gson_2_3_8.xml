@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="org.modelmapper.extensions:modelmapper-gson:2.3.8" type="repository">
+    <properties maven-id="org.modelmapper.extensions:modelmapper-gson:2.3.8" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/modelmapper/extensions/modelmapper-gson/2.3.8/modelmapper-gson-2.3.8.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/modelmapper/modelmapper/2.3.8/modelmapper-2.3.8.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/bank.casus.BLL/bank.casus.BLL.iml" filepath="$PROJECT_DIR$/bank.casus.BLL/bank.casus.BLL.iml" />
-      <module fileurl="file://$PROJECT_DIR$/bank.casus.DAL/bank.casus.DAL.iml" filepath="$PROJECT_DIR$/bank.casus.DAL/bank.casus.DAL.iml" />
-      <module fileurl="file://$PROJECT_DIR$/bank.casus.UIL/bank.casus.UIL.iml" filepath="$PROJECT_DIR$/bank.casus.UIL/bank.casus.UIL.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bank.casus.bll/bank.casus.bll.iml" filepath="$PROJECT_DIR$/bank.casus.bll/bank.casus.bll.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bank.casus.dal/bank.casus.dal.iml" filepath="$PROJECT_DIR$/bank.casus.dal/bank.casus.dal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bank.casus.root/bank.casus.root.iml" filepath="$PROJECT_DIR$/bank.casus.root/bank.casus.root.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bank.casus.ui/bank.casus.ui.iml" filepath="$PROJECT_DIR$/bank.casus.ui/bank.casus.ui.iml" />
       <module fileurl="file://$PROJECT_DIR$/javapractice.iml" filepath="$PROJECT_DIR$/javapractice.iml" />
       <module fileurl="file://$PROJECT_DIR$/readandwrite.practice/readandwrite.practice.iml" filepath="$PROJECT_DIR$/readandwrite.practice/readandwrite.practice.iml" />
       <module fileurl="file://$PROJECT_DIR$/scannerpractice/scannerpractice.iml" filepath="$PROJECT_DIR$/scannerpractice/scannerpractice.iml" />
