@@ -1,24 +1,23 @@
 package Services;
 
-import Interfaces.IBetaalRekeningFactory;
-import Interfaces.IClientEntity;
+import Interfaces.*;
 import Models.Client;
 import org.modelmapper.ModelMapper;
-
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ClientFactory implements Interfaces.IClientFactory {
+public class ClientFactory implements IClientFactory {
 
-    @Override
-    public Client buildNew(String naam, LocalDate geboortedatum) {
-        return buildNew(naam, geboortedatum, new BetaalrekeningFactory());
+    private final IBetaalRekeningFactory betaalrekeningFactory;
+
+    public ClientFactory(IBetaalRekeningFactory betaalrekeningFactory){
+        this.betaalrekeningFactory = betaalrekeningFactory;
     }
 
     @Override
-    public Client buildNew(String naam, LocalDate geboortedatum, IBetaalRekeningFactory betaalrekeningFactory) {
-        return new Client(naam, geboortedatum, betaalrekeningFactory);
+    public Client buildNew(String naam, LocalDate geboortedatum) {
+        return new Client(naam, geboortedatum, this.betaalrekeningFactory);
     }
 
     @Override

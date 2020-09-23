@@ -1,19 +1,22 @@
 package Models;
 
 import Exceptions.SaldoTeLaagException;
+import Interfaces.IRekening;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class Rekening {
+public abstract class Rekening implements IRekening {
     protected UUID rekeningnummer;
     protected BigDecimal saldo;
     protected BigDecimal minimum;
 
+    @Override
     public UUID getRekeningnummer() {
         return this.rekeningnummer;
     }
-    @SuppressWarnings({"unused", "RedundantSuppression"})
+
+    @Override
     public BigDecimal getSaldo() {
         return this.saldo;
     }
@@ -24,14 +27,16 @@ public class Rekening {
         this.minimum = BigDecimal.ZERO;
     }
 
-    protected void afschrijven(BigDecimal bedrag) throws SaldoTeLaagException {
+    @Override
+    public void afschrijven(BigDecimal bedrag) throws SaldoTeLaagException {
         BigDecimal newSaldo = this.saldo.subtract(bedrag);
         if (newSaldo.compareTo(this.minimum) < 0)
             throw new SaldoTeLaagException();
         this.saldo = newSaldo;
     }
 
-    protected void bijschrijven(BigDecimal bedrag) {
+    @Override
+    public void bijschrijven(BigDecimal bedrag) {
         this.saldo = this.saldo.add(bedrag);
     }
 

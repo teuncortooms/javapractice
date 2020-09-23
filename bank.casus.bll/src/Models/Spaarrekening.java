@@ -1,13 +1,13 @@
 package Models;
 
 import Exceptions.SaldoTeLaagException;
-
+import Interfaces.*;
 import java.math.BigDecimal;
 
-public class Spaarrekening extends Rekening {
-    private final Betaalrekening tegenrekening;
+public class Spaarrekening extends Rekening implements ISpaarrekening {
+    private final IBetaalrekening tegenrekening;
 
-    public Spaarrekening(Betaalrekening tegenrekening) {
+    public Spaarrekening(IBetaalrekening tegenrekening) {
         this.tegenrekening = tegenrekening;
     }
 

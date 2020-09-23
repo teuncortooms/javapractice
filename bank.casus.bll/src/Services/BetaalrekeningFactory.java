@@ -8,13 +8,14 @@ import java.math.BigDecimal;
 
 public class BetaalrekeningFactory implements IBetaalRekeningFactory {
 
-    @Override
-    public Betaalrekening create(BigDecimal bedrag) {
-        return create(bedrag, new SpaarrekeningFactory());
+    private final ISpaarrekeningFactory spaarrekeningFactory;
+
+    public BetaalrekeningFactory(ISpaarrekeningFactory spaarrekeningFactory){
+        this.spaarrekeningFactory = spaarrekeningFactory;
     }
 
     @Override
-    public Betaalrekening create(BigDecimal bedrag, ISpaarrekeningFactory spaarrekeningFactory) {
-        return new Betaalrekening(bedrag, spaarrekeningFactory);
+    public Betaalrekening create(BigDecimal bedrag) {
+        return new Betaalrekening(bedrag, this.spaarrekeningFactory);
     }
 }

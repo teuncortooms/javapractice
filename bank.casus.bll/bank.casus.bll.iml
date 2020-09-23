@@ -8,5 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="org.modelmapper.extensions:modelmapper-gson:2.3.8" level="project" />
+    <orderEntry type="library" name="com.fasterxml.jackson.core:jackson-databind:2.2.0" level="project" />
   </component>
 </module>

@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface IClientRepository {
     List<IClientEntity> getAll() throws IOException, FileReaderException;
-    void addCLient(IClientEntity client) throws IOException, FileReaderException, FileWriterException;
+    void addClient(IClientEntity client) throws IOException, FileReaderException, FileWriterException;
 }

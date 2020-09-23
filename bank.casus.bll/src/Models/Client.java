@@ -1,19 +1,19 @@
 package Models;
 
 import Exceptions.RekeningNietGevondenException;
+import Interfaces.IClient;
 import Services.BetaalrekeningFactory;
 import Interfaces.IBetaalRekeningFactory;
 import Interfaces.ISpaarrekeningFactory;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-public class Client {
-    @SuppressWarnings({"FieldCanBeLocal", "unused", "RedundantSuppression"})
+public class Client implements IClient {
     private final String naam;
-    @SuppressWarnings({"FieldCanBeLocal", "unused", "RedundantSuppression"})
     private final LocalDate geboortedatum;
     private final UUID clientNummer;
     private final List<Betaalrekening> betaalrekeningen;
@@ -27,7 +27,10 @@ public class Client {
         return this.betaalrekeningen;
     }
 
-    @SuppressWarnings({"unused", "RedundantSuppression"})
+    public Client() {
+        this(null, null);
+    }
+
     public Client(String naam, LocalDate geboortedatum) {
         this(naam, geboortedatum, new BetaalrekeningFactory());
     }
@@ -36,11 +39,10 @@ public class Client {
         this.clientNummer = UUID.randomUUID();
         this.naam = naam;
         this.geboortedatum = geboortedatum;
-        this.betaalrekeningen = new LinkedList<>();
+        this.betaalrekeningen = new LinkedList<Betaalrekening>();
         this.betaalRekeningFactory = betaalRekeningFactory;
     }
 
-    @SuppressWarnings({"unused", "RedundantSuppression"})
     public Betaalrekening getBetaalrekening(UUID betaalrekeningNummer) throws RekeningNietGevondenException {
         return this.getBetaalrekeningen().stream()
                 .filter((c) -> c.getRekeningnummer() == betaalrekeningNummer)
@@ -53,7 +55,6 @@ public class Client {
         return nieuweRekening;
     }
 
-    @SuppressWarnings({"unused", "RedundantSuppression"})
     public Betaalrekening openBetaalrekening(BigDecimal bedrag, ISpaarrekeningFactory spaarrekeningFactory) {
         Betaalrekening nieuweRekening = this.betaalRekeningFactory.create(bedrag, spaarrekeningFactory);
         this.betaalrekeningen.add(nieuweRekening);

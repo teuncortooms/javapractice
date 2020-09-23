@@ -9,6 +9,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="bank.casus.bll" />
-    <orderEntry type="module" module-name="bank.casus.root" />
+    <orderEntry type="module" module-name="bank.casus.application" />
   </component>
 </module>

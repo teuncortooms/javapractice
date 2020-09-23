@@ -2,6 +2,7 @@ package Models;
 
 import Exceptions.RekeningNietGevondenException;
 import Exceptions.SaldoTeLaagException;
+import Interfaces.IBetaalrekening;
 import Services.SpaarrekeningFactory;
 import Interfaces.ISpaarrekeningFactory;
 
@@ -10,8 +11,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-public class Betaalrekening extends Rekening {
-    private final List<Spaarrekening> spaarrekeningen = new LinkedList<>();
+public class Betaalrekening extends Rekening implements IBetaalrekening {
+    private final List<Spaarrekening> spaarrekeningen = new LinkedList<Spaarrekening>();
     private final ISpaarrekeningFactory spaarrekeningFactory;
 
     @SuppressWarnings({"unused", "RedundantSuppression"})
@@ -31,20 +32,19 @@ public class Betaalrekening extends Rekening {
         return this.spaarrekeningen;
     }
 
-    @SuppressWarnings({"unused", "RedundantSuppression"})
     public Spaarrekening getSpaarrekening(UUID spaarrekeningNummer) throws RekeningNietGevondenException {
         return this.getSpaarrekeningen().stream()
                 .filter((s) -> s.getRekeningnummer() == spaarrekeningNummer)
                 .findFirst().orElseThrow(RekeningNietGevondenException::new);
     }
 
-    public void overboeken(BigDecimal bedrag, Betaalrekening tegenrekening)
+    public void overboeken(BigDecimal bedrag, IBetaalrekening tegenrekening)
             throws SaldoTeLaagException, IllegalArgumentException {
         this.afschrijven(bedrag);
         tegenrekening.bijschrijven(bedrag);
     }
 
-    public Spaarrekening aanmakenSpaarrekening() {
+    public Spaarrekening openSpaarrekening() {
         Spaarrekening spaarrekening = this.spaarrekeningFactory.create(this);
         this.spaarrekeningen.add(spaarrekening);
         return spaarrekening;

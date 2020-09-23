@@ -15,7 +15,7 @@ public class EmptyClientRepository implements IClientRepository {
     }
 
     @Override
-    public void addCLient(IClientEntity client) throws IOException {
+    public void addClient(IClientEntity client) throws IOException {
 
     }
 }

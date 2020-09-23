@@ -1,35 +1,35 @@
+import Exceptions.ClientNietGevondenException;
 import Exceptions.FileReaderException;
 import Exceptions.SaldoTeLaagException;
-import Models.Bank;
+import Interfaces.*;
 import Models.Betaalrekening;
 import Models.Client;
 import Models.Spaarrekening;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.UUID;
 
 public class Main {
     public static void main(String[] args) {
         try {
-            BankApp app = new BankApp();
-            Bank bank = app.createBank();
+            CompositionRoot root = new CompositionRoot();
+            IBank bank = root.getBank();
 
-            // client 1
-            Client client1 = bank.aanmeldenClient("Teun",
+            IClient client1 = bank.aanmeldenClient("Teun",
                     LocalDate.of(1985, 9, 6));
-            Betaalrekening betaalrekening1 = client1.openBetaalrekening(BigDecimal.ONE);
-            // client 2
-            Client client2 = bank.aanmeldenClient("Pietje",
+            IClient client2 = bank.aanmeldenClient("Pietje",
                     LocalDate.of(1990, 9, 6));
-            Betaalrekening betaalrekening2 = client2.openBetaalrekening(BigDecimal.ONE);
-            Spaarrekening spaarrekening = betaalrekening2.aanmakenSpaarrekening();
 
-            // overboeken betaalrekeningen
+            IBetaalrekening betaalrekening1 = client1.openBetaalrekening(BigDecimal.ONE);
+            IBetaalrekening betaalrekening2 = client2.openBetaalrekening(BigDecimal.ONE);
+            ISpaarrekening spaarrekening = betaalrekening2.openSpaarrekening();
+
+            // acties betaalrekeningen
             betaalrekening1.storten(BigDecimal.valueOf(30.00));
             betaalrekening1.overboeken(BigDecimal.valueOf(60.00), betaalrekening2);
 
-            // inleggen en opnemen spaarrekening
+            // acties spaarrekening
             spaarrekening.inleggen(BigDecimal.valueOf(40.00));
             spaarrekening.opnemen(BigDecimal.valueOf(10.00));
 
@@ -44,6 +44,7 @@ public class Main {
             e.printStackTrace();
         } catch (SaldoTeLaagException e) {
             System.out.println("Saldo te laag");
+            e.printStackTrace();
         }
     }
 }

@@ -1,12 +1,11 @@
 package Services;
 
-import Interfaces.ISpaarrekeningFactory;
-import Models.Betaalrekening;
+import Interfaces.*;
 import Models.Spaarrekening;
 
 public class SpaarrekeningFactory implements ISpaarrekeningFactory {
      @Override
-     public Spaarrekening create(Betaalrekening betaalrekening){
+     public Spaarrekening create(IBetaalrekening betaalrekening){
          return new Spaarrekening(betaalrekening);
      }
 }

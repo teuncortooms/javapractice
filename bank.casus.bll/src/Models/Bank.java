@@ -2,21 +2,18 @@ package Models;
 
 import Exceptions.ClientNietGevondenException;
 import Exceptions.FileReaderException;
-import Interfaces.IClientEntity;
+import Exceptions.RekeningNietGevondenException;
+import Interfaces.*;
 import Services.ClientFactory;
-import Interfaces.IBetaalRekeningFactory;
-import Interfaces.IClientFactory;
-import Interfaces.IClientRepository;
 import Mocks.EmptyClientRepository;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-public class Bank {
+public class Bank implements IBank {
     private final IClientFactory clientFactory;
-    List<Client> clients;
+    private List<Client> clients;
 
     public Bank() throws IOException, FileReaderException {
         this(new EmptyClientRepository(), new ClientFactory());
@@ -28,11 +25,14 @@ public class Bank {
         this.clientFactory = clientFactory;
     }
 
-    @SuppressWarnings({"unused", "RedundantSuppression"})
     public Client getClient(UUID clientNummer) throws ClientNietGevondenException {
         return this.clients.stream()
                 .filter((c) -> c.getClientNummer() == clientNummer)
                 .findFirst().orElseThrow(ClientNietGevondenException::new);
+    }
+
+    public List<Client> getAllClients() {
+        return this.clients;
     }
 
     public Client aanmeldenClient(String naam, LocalDate geboortedatum) {
@@ -41,10 +41,33 @@ public class Bank {
         return client;
     }
 
-    @SuppressWarnings({"unused", "RedundantSuppression"})
     public Client aanmeldenClient(String naam, LocalDate geboortedatum, IBetaalRekeningFactory betaalrekeningFactory) {
         Client client = this.clientFactory.buildNew(naam, geboortedatum, betaalrekeningFactory);
         clients.add(client);
         return client;
+    }
+
+    public Betaalrekening findRekening(UUID betaalrekeningNummer) throws ClientNietGevondenException, RekeningNietGevondenException {
+        IClient client = findClient(betaalrekeningNummer);
+        return client.getBetaalrekening(betaalrekeningNummer);
+    }
+
+    private Client findClient(UUID betaalrekeningNummer) throws ClientNietGevondenException {
+        for (var client : this.clients) {
+            if (clientHasRekening(client, betaalrekeningNummer)) {
+                return client;
+            }
+        }
+        throw new ClientNietGevondenException();
+    }
+
+    private boolean clientHasRekening(IClient client, UUID betaalrekeningNummer) {
+        List<Betaalrekening> rekeningen = client.getBetaalrekeningen();
+        for (var rekening : rekeningen) {
+            if (rekening.getRekeningnummer() == betaalrekeningNummer) {
+                return true;
+            }
+        }
+        return false;
     }
 }
