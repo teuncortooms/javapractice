@@ -4,8 +4,6 @@ import Exceptions.ClientNietGevondenException;
 import Exceptions.FileReaderException;
 import Exceptions.RekeningNietGevondenException;
 import Interfaces.*;
-import Services.ClientFactory;
-import Mocks.EmptyClientRepository;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
@@ -13,11 +11,7 @@ import java.util.UUID;
 
 public class Bank implements IBank {
     private final IClientFactory clientFactory;
-    private List<Client> clients;
-
-    public Bank() throws IOException, FileReaderException {
-        this(new EmptyClientRepository(), new ClientFactory());
-    }
+    private final List<Client> clients;
 
     public Bank(IClientRepository clientRepository, IClientFactory clientFactory) throws FileReaderException, IOException {
         List<IClientEntity> entities = clientRepository.getAll();
@@ -42,7 +36,7 @@ public class Bank implements IBank {
     }
 
     public Client aanmeldenClient(String naam, LocalDate geboortedatum, IBetaalRekeningFactory betaalrekeningFactory) {
-        Client client = this.clientFactory.buildNew(naam, geboortedatum, betaalrekeningFactory);
+        Client client = this.clientFactory.buildNew(naam, geboortedatum);
         clients.add(client);
         return client;
     }

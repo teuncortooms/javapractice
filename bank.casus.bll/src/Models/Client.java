@@ -2,10 +2,8 @@ package Models;
 
 import Exceptions.RekeningNietGevondenException;
 import Interfaces.IClient;
-import Services.BetaalrekeningFactory;
 import Interfaces.IBetaalRekeningFactory;
 import Interfaces.ISpaarrekeningFactory;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -27,19 +25,19 @@ public class Client implements IClient {
         return this.betaalrekeningen;
     }
 
-    public Client() {
-        this(null, null);
-    }
-
-    public Client(String naam, LocalDate geboortedatum) {
-        this(naam, geboortedatum, new BetaalrekeningFactory());
+    public Client(){
+        this.clientNummer = null;
+        this.naam = null;
+        this.geboortedatum = null;
+        this.betaalrekeningen = null;
+        this.betaalRekeningFactory = null;
     }
 
     public Client(String naam, LocalDate geboortedatum, IBetaalRekeningFactory betaalRekeningFactory) {
         this.clientNummer = UUID.randomUUID();
         this.naam = naam;
         this.geboortedatum = geboortedatum;
-        this.betaalrekeningen = new LinkedList<Betaalrekening>();
+        this.betaalrekeningen = new LinkedList<>();
         this.betaalRekeningFactory = betaalRekeningFactory;
     }
 
@@ -56,7 +54,7 @@ public class Client implements IClient {
     }
 
     public Betaalrekening openBetaalrekening(BigDecimal bedrag, ISpaarrekeningFactory spaarrekeningFactory) {
-        Betaalrekening nieuweRekening = this.betaalRekeningFactory.create(bedrag, spaarrekeningFactory);
+        Betaalrekening nieuweRekening = this.betaalRekeningFactory.create(bedrag);
         this.betaalrekeningen.add(nieuweRekening);
         return nieuweRekening;
     }

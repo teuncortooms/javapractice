@@ -3,22 +3,15 @@ package Models;
 import Exceptions.RekeningNietGevondenException;
 import Exceptions.SaldoTeLaagException;
 import Interfaces.IBetaalrekening;
-import Services.SpaarrekeningFactory;
 import Interfaces.ISpaarrekeningFactory;
-
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
 public class Betaalrekening extends Rekening implements IBetaalrekening {
-    private final List<Spaarrekening> spaarrekeningen = new LinkedList<Spaarrekening>();
+    private final List<Spaarrekening> spaarrekeningen = new LinkedList<>();
     private final ISpaarrekeningFactory spaarrekeningFactory;
-
-    @SuppressWarnings({"unused", "RedundantSuppression"})
-    public Betaalrekening(BigDecimal bedrag) {
-        this(bedrag, new SpaarrekeningFactory());
-    }
 
     public Betaalrekening(BigDecimal bedrag, ISpaarrekeningFactory spaarrekeningFactory) {
         if (bedrag.compareTo(BigDecimal.ZERO) < 1) throw new IllegalArgumentException(
